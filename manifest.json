@@ -1,8 +1,8 @@
 {
     "id": "redditisfun.cards.images.light",
-    "name": "cards 1-column light (ALPHA)",
+    "name": "cards 1-column light",
     
-    "version": 3,
+    "version": 4,
     "app_version_code": 177,
     "app_version_name": "3.1.4",
     "api_level": 8,
