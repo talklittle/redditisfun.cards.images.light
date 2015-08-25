@@ -31,6 +31,8 @@ local CLICKED_BGCOLOR = "#EBEBEB"
 --local THUMBNAIL_BGCOLOR = "#DEDEDE"
 local THUMBNAIL_BGCOLOR = ""
 
+local thumbnails = require "thumbnails"
+
 ---
 -- @usage exported
 function newView(Builder)
@@ -253,44 +255,6 @@ function newView(Builder)
     view1:setTypeface("Roboto")
 end
 
----
--- get the label text for image links
-local function getImageUrl(url)
-	local urlLower = url:lower()
-	local last4 = urlLower:sub(-4)
-	if urlLower:sub(1, 19) == "http://i.imgur.com/" then
-		if last4 == ".jpg" or last4 == ".gif" or last4 == ".png" then
-			return url:sub(1, url:len() - 4) .. "l" .. last4
-		else
-			local last5 = urlLower:sub(-5)
-			if last5 == ".jpeg" then
-				return url:sub(1, url:len() - 5) .. "l" .. last5
-			end
-		end
-		return url .. "l.jpg"
-	elseif urlLower:sub(1, 19) == "http://imgur.com/a/" then
-		return url
-	elseif urlLower:sub(1, 25) == "http://imgur.com/gallery/" then
-		return nil
-	elseif urlLower:sub(1, 17) == "http://imgur.com/" then
-		if last4 == ".jpg" or last4 == ".gif" or last4 == ".png" then
-			return url:sub(1, url:len() - 4) .. "l" .. last4
-		else
-			local last5 = urlLower:sub(-5)
-			if last5 == ".jpeg" then
-				return url:sub(1, url:len() - 5) .. "l" .. last5
-			end
-		end
-		return url .. "l.jpg"
-	elseif last4 == ".jpg" or last4 == ".gif" or last4 == ".png" then
-		return url
-	elseif urlLower:sub(-5) == ".jpeg" then
-		return url
-	else
-		return nil
-	end
-end
-
 function bindView(Holder, Thing, ListItem)
 	local title = Holder:getView("title")
 	local subreddit = Holder:getView("subreddit")
@@ -336,7 +300,7 @@ function bindView(Holder, Thing, ListItem)
 		imageView:setVisibility("gone")
 	else
 		nsfw:setVisibility("gone")
-		local imageUrl = getImageUrl(thingUrl)
+		local imageUrl = thumbnails.getImageUrl(thingUrl)
 		if imageUrl then
 			if imageUrl ~= imageView:getTag("currentUrl") then
 				imageView:displayImageWithProgress(imageUrl, imageProgress)
