@@ -304,7 +304,7 @@ function bindView(Holder, Thing, ListItem)
 		imageView:setVisibility("gone")
 		imageFrame:setLayoutHeight(WRAP_CONTENT)
 		imageProgress:setVisibility("gone")
-	else
+	elseif thumbnails.enabled then
 		nsfw:setVisibility("gone")
 		local imageUrl = thumbnails.getImageUrl(thingUrl)
 		if imageUrl then
@@ -322,7 +322,7 @@ function bindView(Holder, Thing, ListItem)
 						local previewImageHeight = tonumber(dimenString:sub(xIndex + 1))
 						local calculatedHeight = imageFrameWidth * previewImageHeight / previewImageWidth
 						imageFrame:setLayoutHeight(calculatedHeight)
-						imageView:setLayoutSize(imageFrameWidth, calculatedHeight)
+						imageView:setLayoutSize(tostring(imageFrameWidth), tostring(calculatedHeight))
 					else
 						imageView:setLayoutSize("fill_parent", "wrap_content")
 					end
@@ -334,6 +334,12 @@ function bindView(Holder, Thing, ListItem)
 			imageProgress:setVisibility("gone")
 			imageFrame:setLayoutHeight(WRAP_CONTENT)
 		end
+	else
+		nsfw:setVisibility("gone")
+		imageView:cancelDisplayImage()
+		imageView:setVisibility("gone")
+		imageProgress:setVisibility("gone")
+		imageFrame:setLayoutHeight(WRAP_CONTENT)
 	end
 	
     -- votes
