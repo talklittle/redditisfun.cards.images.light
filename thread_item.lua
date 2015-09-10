@@ -35,6 +35,7 @@ local CLICKED_BGCOLOR = "#EBEBEB"
 local THUMBNAIL_BGCOLOR = ""
 
 local thumbnails = require "thumbnails"
+local neturl = require "neturl"
 
 ---
 -- @usage exported
@@ -285,10 +286,13 @@ function bindView(Holder, Thing, ListItem)
 
     subreddit:setText(Thing:getSubreddit())
     local thingUrl = Thing:getUrl()
+    local thingU = neturl.parse(thingUrl)
     if Thing:isIs_self() then
         domain:setText("self")
-    elseif thingUrl:sub(1, 19) == "http://imgur.com/a/" then
+    elseif thingU.host == "imgur.com" and thingU.path:sub(1, 3) == "/a/" then
         domain:setText("imgur album")
+    elseif thingU.host == "imgur.com" and thingU.path:sub(1, 9) == "/gallery/" then
+        domain:setText("imgur gallery")
     else
         domain:setText(Thing:getDomain())
     end
